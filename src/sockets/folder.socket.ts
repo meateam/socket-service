@@ -21,6 +21,6 @@ export class FolderSocket {
 
 
     static emit(room: string) {
-        FolderSocket.nsp.to(room).emit('folderChange');
+        FolderSocket.nsp.in(room).emit('folderChange');
     }
 }

@@ -21,7 +21,7 @@ export class SharedFoldersSocket {
 
     static emit(users: string[]) {
         users.forEach((user) => {
-            SharedFoldersSocket.nsp.to(user).emit('shardFoldersChange');
+            SharedFoldersSocket.nsp.in(user).emit('shardFoldersChange');
         });
     }
 }

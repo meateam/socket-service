@@ -9,7 +9,6 @@ export class ConfigurationSocket {
         ConfigurationSocket.nsp.on("connect", (socket: SocketIO.Socket) => {
             logger.log(`Connected client ${socket.id}`);
 
-
             socket.on('disconnect', async () => {
                 logger.log(`Disconnect client ${socket.id}`);
             });
