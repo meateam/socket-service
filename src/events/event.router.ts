@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { EventController } from './event.controller';
-// import { wrapAsync } from '../utils/wrapper';
 
 const EventRouter: Router = Router();
 

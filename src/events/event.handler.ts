@@ -1,17 +1,17 @@
-import { ConfigurationSocket } from '../sockets/configuration.socket';
-import { FolderSocket } from '../sockets/folder.socket';
-import { SharedFoldersSocket } from '../sockets/shared.socket';
+import { ConfigurationSocket } from '../sockets/socket.configuration';
+import { FolderSocket } from '../sockets/socket.folder';
+import { SharedFoldersSocket } from '../sockets/socket.shared';
 
 export class EventHandler {
-    static folder(folderId: string) {
-        FolderSocket.emit(folderId);
-    }
+  static folder(folderId: string): void {
+    FolderSocket.emit(folderId);
+  }
 
-    static shared(users: string[]) {
-        SharedFoldersSocket.emit(users);
-    }
+  static shared(users: string[]): void {
+    SharedFoldersSocket.emit(users);
+  }
 
-    static configuration() {
-        ConfigurationSocket.emit();
-    }
-} 
+  static configuration(): void {
+    ConfigurationSocket.emit();
+  }
+}
