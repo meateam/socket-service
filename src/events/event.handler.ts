@@ -1,18 +1,18 @@
-import { RefresSocket } from '../sockets/socket.refres';
+import { RefreshSocket } from '../sockets/socket.refresh';
 import { config } from '../config';
 
 export class EventHandler {
   static folders(folderIDs: string[], userIDs: string[]): void {
     if (folderIDs.length) {
-      RefresSocket.emitRoom(folderIDs, config.socket.namespaces.folder);
+      RefreshSocket.emitRoom(folderIDs, config.socket.namespaces.folder);
     }
 
     if (userIDs.length) {
-      RefresSocket.emitRoom(userIDs, config.socket.namespaces.shared);
+      RefreshSocket.emitRoom(userIDs, config.socket.namespaces.shared);
     }
   }
 
   static configuration(): void {
-    RefresSocket.emit(config.socket.namespaces.confguratioin);
+    RefreshSocket.emit(config.socket.namespaces.confguratioin);
   }
 }

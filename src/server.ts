@@ -6,7 +6,7 @@ import { config } from './config';
 import { AppRouter } from './router';
 import { userErrorHandler, serverErrorHandler, unknownErrorHandler } from './utils/errors/handler';
 import { logger } from './utils/logger/logger';
-import { RefresSocket } from './sockets/socket.refres';
+import { RefreshSocket } from './sockets/socket.refresh';
 
 export class Server {
   public app: express.Application;
@@ -33,7 +33,7 @@ export class Server {
 
   private connectSockets() {
     Object.values(config.socket.namespaces).forEach((namespace: string) => {
-      RefresSocket.connect(this.io.of(namespace));
+      RefreshSocket.connect(this.io.of(namespace));
     });
   }
 

@@ -1,11 +1,11 @@
 import * as socketIo from 'socket.io';
 import { logger } from '../utils/logger/logger';
 
-export class RefresSocket {
+export class RefreshSocket {
   static io: socketIo.Server;
 
   static createSocket(io: socketIo.Server): void {
-    RefresSocket.io = io;
+    RefreshSocket.io = io;
   }
 
   static connect(nsp: socketIo.Namespace): void {
@@ -23,7 +23,7 @@ export class RefresSocket {
   }
 
   static getNamespace(name: string) {
-    return RefresSocket.io.of(name);
+    return RefreshSocket.io.of(name);
   }
 
   static getEventName(name: string) {
@@ -32,11 +32,11 @@ export class RefresSocket {
 
   static emitRoom(arr: string[], nsp: string): void {
     arr.forEach((room) => {
-      RefresSocket.getNamespace(nsp).in(room).emit(RefresSocket.getEventName(nsp));
+      RefreshSocket.getNamespace(nsp).in(room).emit(RefreshSocket.getEventName(nsp));
     });
   }
 
   static emit(nsp: string): void {
-    RefresSocket.getNamespace(nsp).emit(RefresSocket.getEventName(nsp));
+    RefreshSocket.getNamespace(nsp).emit(RefreshSocket.getEventName(nsp));
   }
 }
