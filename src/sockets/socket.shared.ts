@@ -9,8 +9,8 @@ export class SharedFoldersSocket {
     SharedFoldersSocket.nsp.on('connect', (socket: SocketIO.Socket) => {
       logger.log(`Connected client ${socket.id}`);
 
-      socket.on('connectUser', (userId: string) => {
-        socket.join(userId);
+      socket.on('joinRoom', (room: string) => {
+        socket.join(room);
       });
 
       socket.on('disconnect', async () => {

@@ -2,13 +2,11 @@ import * as express from 'express';
 import * as socketIo from 'socket.io';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
-import { config } from './utils/config';
+import { config } from './config';
 import { AppRouter } from './router';
 import { userErrorHandler, serverErrorHandler, unknownErrorHandler } from './utils/errors/handler';
 import { logger } from './utils/logger/logger';
-import { ConfigurationSocket } from './sockets/socket.configuration';
-import { FolderSocket } from './sockets/socket.folder';
-import { SharedFoldersSocket } from './sockets/socket.shared';
+import { RefresSocket } from './sockets/socket.refres';
 
 export class Server {
   public app: express.Application;
@@ -34,9 +32,9 @@ export class Server {
   }
 
   private connectSockets() {
-    ConfigurationSocket.connect(this.io);
-    FolderSocket.connect(this.io);
-    SharedFoldersSocket.connect(this.io);
+    Object.values(config.socket.namespaces).forEach((namespace: string) => {
+      RefresSocket.connect(this.io.of(namespace));
+    });
   }
 
   private setHeaders = (req: express.Request, res: express.Response, next: express.NextFunction) => {

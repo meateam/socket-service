@@ -1,12 +1,12 @@
 import * as socketIo from 'socket.io';
 import { logger } from '../utils/logger/logger';
 
-export class FolderSocket {
+export class RefresSocket {
   static nsp: socketIo.Namespace;
 
-  static connect(io: socketIo.Server): void {
-    FolderSocket.nsp = io.of('/folder');
-    FolderSocket.nsp.on('connect', (socket: SocketIO.Socket) => {
+  static connect(nsp: socketIo.Namespace): void {
+    RefresSocket.nsp = nsp;
+    RefresSocket.nsp.on('connect', (socket: SocketIO.Socket) => {
       logger.log(`Connected client ${socket.id}`);
 
       socket.on('joinRoom', (room: string) => {
@@ -19,9 +19,13 @@ export class FolderSocket {
     });
   }
 
-  static emit(folders: string[]): void {
-    folders.forEach((fodler) => {
-      FolderSocket.nsp.in(fodler).emit('folderChange');
+  static emitRoom(arr: string[], event: string): void {
+    arr.forEach((room) => {
+      RefresSocket.nsp.in(room).emit(event);
     });
+  }
+
+  static emit(event: string): void {
+    RefresSocket.nsp.emit(event);
   }
 }

@@ -1,17 +1,18 @@
-import { ConfigurationSocket } from '../sockets/socket.configuration';
-import { FolderSocket } from '../sockets/socket.folder';
-import { SharedFoldersSocket } from '../sockets/socket.shared';
+import { RefresSocket } from '../sockets/socket.refres';
+import { config } from '../config';
 
 export class EventHandler {
-  static folder(folderId: string): void {
-    FolderSocket.emit(folderId);
-  }
+  static folders(folderIDs: string[], userIDs: string[]): void {
+    if (folderIDs.length) {
+      RefresSocket.emitRoom(folderIDs, config.socket.namespaces.folder);
+    }
 
-  static shared(users: string[]): void {
-    SharedFoldersSocket.emit(users);
+    if (userIDs.length) {
+      RefresSocket.emitRoom(userIDs, config.socket.namespaces.shared);
+    }
   }
 
   static configuration(): void {
-    ConfigurationSocket.emit();
+    RefresSocket.emit(config.socket.namespaces.confguratioin);
   }
 }
