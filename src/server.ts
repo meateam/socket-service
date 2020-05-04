@@ -6,7 +6,7 @@ import { config } from './config';
 import { AppRouter } from './router';
 import { userErrorHandler, serverErrorHandler, unknownErrorHandler } from './utils/errors/handler';
 import { logger } from './utils/logger/logger';
-import { RefreshSocket } from './sockets/socket.refresh';
+import { Socket } from './socket';
 
 export class Server {
   public app: express.Application;
@@ -21,6 +21,8 @@ export class Server {
     this.app = express();
     this.server = http.createServer(this.app);
     this.io = socketIo(this.server);
+    Socket.startSocket(this.io);
+
     this.configurationMiddleware();
     this.app.use(AppRouter);
     this.initializeErrorHandler();
@@ -28,27 +30,23 @@ export class Server {
     this.server.listen(config.server.port, () => {
       logger.log(`${config.server.name} listening on port ${config.server.port}`);
     });
-    this.connectSockets();
-  }
-
-  private connectSockets() {
-    Object.values(config.socket.namespaces).forEach((namespace: string) => {
-      RefreshSocket.connect(this.io.of(namespace));
-    });
-  }
-
-  private setHeaders = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type');
-    next();
   }
 
   private configurationMiddleware() {
     this.app.use(this.setHeaders);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
+  }
+
+    /**
+   * setHeaders set the response Access-Control-Allow headers
+   */
+  private setHeaders = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type');
+    next();
   }
 
   private initializeErrorHandler() {

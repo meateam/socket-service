@@ -7,3 +7,7 @@ services:
       - "8080:8080"
     environment:
       APPLICATION_PORT: "3000"
+      CONFIGURATION_NAMESPACE: "/configuration"
+      SHARED_FOLDERS_NAMESPACE: "/shared-folders"
+      FOLDER_NAMESPACE: "/folder"
+      SOCKET_EVENT_NAME: "refresh"
