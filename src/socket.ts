@@ -37,7 +37,7 @@ export class Socket {
    */
   static emitRoom(rooms: string[], nsp: string): void {
     rooms.forEach((room: string) => {
-      Socket.io.of(nsp).in(room).emit(config.socket.event);
+      Socket.io.of(nsp).to(room).emit(config.socket.event);
     });
   }
 
