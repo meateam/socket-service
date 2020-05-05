@@ -7,13 +7,13 @@ export class EventHandler {
    * @param folderIDs is an array of all the foldersId's
    * @param userIDs is an array of all the userId's
    */
-  static folders(folders: string[], users: string[]): void {
-    if (folders && folders.length) {
-      Socket.emitRoom(folders, config.socket.namespaces.folder);
+  static folders(folderIDs: string[], userIDs: string[]): void {
+    if (folderIDs && folderIDs.length) {
+      Socket.emitRoom(folderIDs, config.socket.namespaces.folder);
     }
 
-    if (users && users.length) {
-      Socket.emitRoom(users, config.socket.namespaces.shared);
+    if (userIDs && userIDs.length) {
+      Socket.emitRoom(userIDs, config.socket.namespaces.shared);
     }
   }
 

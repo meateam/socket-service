@@ -5,7 +5,7 @@
 | METHOD | ENDPOINT | BODY | DESCRIPTION |
 | --- | --- | --- | --- |
 | POST | /api/socket/configuration | | Emits an event to all the connected users, in order to fetch the page again |
-| POST | /api/socket/folders | { users: [id, id, id], folders: [id, id] } | Emits an event to the the users that are connected to the received room (userIDs, folderIDs) |
+| POST | /api/socket/shared | { userIDs: [id, id, id], folderIDs: [id, id] } | Emits an event to the the users that are connected to the received room (userIDs, folderIDs) |
  
  ### userIDs
  Is an array of all the users that where shared.
@@ -20,11 +20,11 @@
  | EVENTS | NAMESPACE | ROOM |
 | --- | --- | --- |
 | refresh | /configuration | default |
-| refresh | /folder | folderId |
-| refresh | /shared-folders | userId |
+| refresh | /folder | folderID |
+| refresh | /shared-page | userID |
 
  ### subscribes
  | ON | NAMESPACE | ROOM | DATA
 | --- | --- | --- | --- |
-| joinRoom | /folder | folderId | folderId |
-| joinRoom | /shared-folders | userId | userId |
+| joinRoom | /folder | folderID | folderID |
+| joinRoom | /shared-page | userID | userID |
