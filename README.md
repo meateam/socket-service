@@ -18,13 +18,13 @@
 
  ### events
  | EVENTS | NAMESPACE | ROOM |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | refresh | /configuration | default |
 | refresh | /folder | folderId |
 | refresh | /shared-folders | userId |
 
  ### subscribes
  | ON | NAMESPACE | ROOM | DATA
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | joinRoom | /folder | folderId | folderId |
 | joinRoom | /shared-folders | userId | userId |
