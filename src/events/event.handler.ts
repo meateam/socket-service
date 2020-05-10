@@ -7,7 +7,7 @@ export class EventHandler {
    * @param folderIDs is an array of all the foldersId's
    * @param userIDs is an array of all the userId's
    */
-  static folders(folderIDs: string[], userIDs: string[]): void {
+  static shared(folderIDs: string[], userIDs: string[]): void {
     if (folderIDs && folderIDs.length) {
       Socket.emitRoom(folderIDs, config.socket.namespaces.folder);
     }
