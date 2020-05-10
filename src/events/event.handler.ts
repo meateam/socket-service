@@ -1,4 +1,4 @@
-import { Socket } from '../socket';
+import { SocketsConnector } from '../socket';
 import { config } from '../config';
 
 export class EventHandler {
@@ -9,11 +9,11 @@ export class EventHandler {
    */
   static shared(folderIDs: string[], userIDs: string[]): void {
     if (folderIDs && folderIDs.length) {
-      Socket.emitRoom(folderIDs, config.socket.namespaces.folder);
+      SocketsConnector.emitRoom(folderIDs, config.socket.namespaces.folder);
     }
 
     if (userIDs && userIDs.length) {
-      Socket.emitRoom(userIDs, config.socket.namespaces.shared);
+      SocketsConnector.emitRoom(userIDs, config.socket.namespaces.shared);
     }
   }
 
@@ -21,6 +21,6 @@ export class EventHandler {
    * configuration emits an event in case of configuration change
    */
   static configuration(): void {
-    Socket.emitNamespace(config.socket.namespaces.confguratioin);
+    SocketsConnector.emitNamespace(config.socket.namespaces.confguratioin);
   }
 }

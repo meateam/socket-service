@@ -2,7 +2,7 @@ import * as socketIo from 'socket.io';
 import { logger } from './utils/logger/logger';
 import { config } from './config';
 
-export class Socket {
+export class SocketsConnector {
   static io: socketIo.Server;
 
   /**
@@ -10,9 +10,9 @@ export class Socket {
    * @param io is the socketio server
    */
   static startSocket(io: socketIo.Server): void {
-    Socket.io = io;
+    SocketsConnector.io = io;
     Object.values(config.socket.namespaces).forEach((namespace: string) => {
-      Socket.connect(this.io.of(namespace));
+      SocketsConnector.connect(this.io.of(namespace));
     });
   }
 
@@ -25,6 +25,7 @@ export class Socket {
       logger.log(`Connected client ${socket.id}`);
 
       socket.on('joinRoom', (room: string) => {
+        console.log(room);
         socket.join(room);
       });
     });
@@ -37,7 +38,7 @@ export class Socket {
    */
   static emitRoom(rooms: string[], nsp: string): void {
     rooms.forEach((room: string) => {
-      Socket.io.of(nsp).to(room).emit(config.socket.event);
+      SocketsConnector.io.of(nsp).to(room).emit(config.socket.event);
     });
   }
 
@@ -46,6 +47,6 @@ export class Socket {
    * @param nsp is the socket namespace
    */
   static emitNamespace(nsp: string): void {
-    Socket.io.of(nsp).emit(config.socket.event);
+    SocketsConnector.io.of(nsp).emit(config.socket.event);
   }
 }

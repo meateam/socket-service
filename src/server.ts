@@ -6,7 +6,7 @@ import { config } from './config';
 import { AppRouter } from './router';
 import { userErrorHandler, serverErrorHandler, unknownErrorHandler } from './utils/errors/handler';
 import { logger } from './utils/logger/logger';
-import { Socket } from './socket';
+import { SocketsConnector } from './socket';
 
 export class Server {
   public app: express.Application;
@@ -21,7 +21,7 @@ export class Server {
     this.app = express();
     this.server = http.createServer(this.app);
     this.io = socketIo(this.server);
-    Socket.startSocket(this.io);
+    SocketsConnector.startSocket(this.io);
 
     this.configurationMiddleware();
     this.app.use(AppRouter);
