@@ -1,5 +1,5 @@
 import * as socketIO from 'socket.io';
-import * as sockerIORedis from 'socket.io-redis';
+import * as socketIORedis from 'socket.io-redis';
 import { logger } from './utils/logger/logger';
 import { config } from './config';
 
@@ -12,7 +12,7 @@ export class SocketsConnector {
    */
   static startSocket(io: socketIO.Server): void {
     SocketsConnector.io = io;
-    SocketsConnector.io.adapter(sockerIORedis({ host: config.redis.host, port: config.redis.port as number }));
+    SocketsConnector.io.adapter(socketIORedis({ host: config.redis.host, port: config.redis.port as number }));
     Object.values(config.socket.namespaces).forEach((namespace: string) => {
       SocketsConnector.connect(this.io.of(namespace));
     });
