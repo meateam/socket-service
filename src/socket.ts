@@ -1,16 +1,18 @@
-import * as socketIo from 'socket.io';
+import * as socketIO from 'socket.io';
+import * as sockerIORedis from 'socket.io-redis';
 import { logger } from './utils/logger/logger';
 import { config } from './config';
 
 export class SocketsConnector {
-  static io: socketIo.Server;
+  static io: socketIO.Server;
 
   /**
    * startSocket connect to all the namespaces in the config
    * @param io is the socketio server
    */
-  static startSocket(io: socketIo.Server): void {
+  static startSocket(io: socketIO.Server): void {
     SocketsConnector.io = io;
+    SocketsConnector.io.adapter(sockerIORedis({ host: config.redis.host, port: config.redis.port as number }));
     Object.values(config.socket.namespaces).forEach((namespace: string) => {
       SocketsConnector.connect(this.io.of(namespace));
     });
@@ -20,7 +22,7 @@ export class SocketsConnector {
    * connect gets a namespace and creates an event listener for the socket
    * @param nsp is the socket namespace
    */
-  static connect(nsp: socketIo.Namespace): void {
+  static connect(nsp: socketIO.Namespace): void {
     nsp.on('connect', (socket: SocketIO.Socket) => {
       logger.log(`Connected client ${socket.id}`);
 
