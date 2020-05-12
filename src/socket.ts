@@ -27,7 +27,6 @@ export class SocketsConnector {
       logger.log(`Connected client ${socket.id}`);
 
       socket.on('joinRoom', (room: string) => {
-        console.log(room);
         socket.join(room);
       });
     });
