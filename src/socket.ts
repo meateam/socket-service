@@ -1,7 +1,9 @@
 import * as socketIO from 'socket.io';
 import * as socketIORedis from 'socket.io-redis';
+import * as jwt from 'jsonwebtoken';
 import { logger } from './utils/logger/logger';
 import { config } from './config';
+import { UnauthorizedError } from './utils/errors/application';
 
 export class SocketsConnector {
   static io: socketIO.Server;
@@ -13,6 +15,17 @@ export class SocketsConnector {
   static startSocket(io: socketIO.Server): void {
     SocketsConnector.io = io;
     SocketsConnector.io.adapter(socketIORedis({ host: config.redis.host, port: config.redis.port as number }));
+    SocketsConnector.io.use((socket, next) => {
+      const token: string = socket.handshake.query.token;
+      if (token) {
+        jwt.verify(token, config.authorization.secret, (err) => {
+          if (err) return next(new UnauthorizedError());
+          next();
+        });
+      } else {
+        next(new UnauthorizedError());
+      }
+    });
     Object.values(config.socket.namespaces).forEach((namespace: string) => {
       SocketsConnector.connect(this.io.of(namespace));
     });

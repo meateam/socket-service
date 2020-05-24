@@ -13,6 +13,7 @@ services:
       SOCKET_EVENT_NAME: "refresh"
       REDIS_HOST: "redis"
       REDIS_PORT: 6379
+      GW_SECRET: "krypton@drive"
     depends_on:
       - redis
   redis:

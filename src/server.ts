@@ -7,6 +7,7 @@ import { AppRouter } from './router';
 import { userErrorHandler, serverErrorHandler, unknownErrorHandler } from './utils/errors/handler';
 import { logger } from './utils/logger/logger';
 import { SocketsConnector } from './socket';
+import { Authenticator } from './utils/authenticator';
 
 export class Server {
   public app: express.Application;
@@ -36,11 +37,15 @@ export class Server {
     this.app.use(this.setHeaders);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
+    if (config.authorization.required) {
+      this.app.use(Authenticator.initialize());
+      this.app.use(Authenticator.middleware);
+    }
   }
 
-    /**
-   * setHeaders set the response Access-Control-Allow headers
-   */
+  /**
+ * setHeaders set the response Access-Control-Allow headers
+ */
   private setHeaders = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', 'true');

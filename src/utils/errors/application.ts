@@ -19,3 +19,9 @@ export class ServerError extends ApplicationError {
     super(message, status, 'ServerError');
   }
 }
+
+export class UnauthorizedError extends UserError {
+  constructor(messege = 'Unauthorized') {
+    super(messege, 401);
+  }
+}

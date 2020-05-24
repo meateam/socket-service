@@ -15,4 +15,8 @@ export const config = {
     },
     event: process.env.SOCKET_EVENT_NAME || 'refresh'
   },
+  authorization: {
+    secret: process.env.GW_SECRET || '',
+    required: process.env.AUTH_REQUIRED || false,
+  },
 };
