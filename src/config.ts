@@ -3,6 +3,10 @@ export const config = {
     port: process.env.APPLICATION_PORT || 3000,
     name: 'socket-service',
   },
+  redis: {
+    port: process.env.REDIS_PORT || 6379,
+    host: process.env.REDIS_HOST || 'localhost',
+  },
   socket: {
     namespaces: {
       confguratioin: process.env.CONFIGURATION_NAMESPACE || '/configuration',
@@ -10,5 +14,5 @@ export const config = {
       folder: process.env.FOLDER_NAMESPACE || '/folder'
     },
     event: process.env.SOCKET_EVENT_NAME || 'refresh'
-  }
+  },
 };
