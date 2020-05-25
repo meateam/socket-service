@@ -26,6 +26,7 @@ export class SocketsConnector {
         next(new UnauthorizedError());
       }
     });
+    SocketsConnector.io.origins(config.cors.socket);
     Object.values(config.socket.namespaces).forEach((namespace: string) => {
       SocketsConnector.connect(this.io.of(namespace));
     });

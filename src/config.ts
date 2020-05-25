@@ -19,4 +19,8 @@ export const config = {
     secret: process.env.GW_SECRET || '',
     required: process.env.AUTH_REQUIRED || false,
   },
+  cors: {
+    socket: process.env.GW_WEB_UI || 'localhost',
+    gw: process.env.GW_ALLOW_ORIGINS || 'localhost:8080'
+  },
 };
