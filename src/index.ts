@@ -1,3 +1,7 @@
-import { Server } from './server';
+import { Socket } from './socket';
+import { RabbitHandler } from './utils/rabbitConnector';
 
-Server.startServer();
+(async () => {
+  Socket.startSocket();
+  await RabbitHandler.initalizeRabbit();
+})();
