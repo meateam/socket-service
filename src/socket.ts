@@ -10,6 +10,7 @@ import { IMessage, OBJECTTYPE } from './message/message.interface';
 
 export class Socket {
   static io: socketIO.Server;
+
   private app: express.Application;
   private server: http.Server;
 
@@ -41,7 +42,7 @@ export class Socket {
         next(new UnauthorizedError());
       }
     });
-    Socket.io.origins(config.cors.socket);
+    Socket.io.origins(config.authorization.origin);
     this.connect();
   }
 
