@@ -1,4 +1,4 @@
-import * as socketRabbit from 'socket-rabbit';
+import * as socketRabbit from 'rabbit-socket.io';
 import { config } from './config';
 
 export interface IMessage {
@@ -15,19 +15,20 @@ export enum OBJECTTYPE {
 }
 
 enum OPERATION {
-    ADD = 'ADD',
-    UPDATE = 'UPDATE',
-    DELETE= 'DELETE',
+  ADD = 'ADD',
+  UPDATE = 'UPDATE',
+  DELETE = 'DELETE',
 }
 
 (async () => {
-  await socketRabbit.connect(config.rabbit.connectionString, config.rabbit.queue);
+  await socketRabbit.connect(config.rabbit.connectionString, config.port as number);
   await socketRabbit.listen(config.rabbit.queue, (content) => {
+
     const message = JSON.parse(content);
 
-    const data = { fileID: message.fileID, operation: message.operation, folderID: message.folderID };
+    const data = { fileID: message.fileID, folderID: message.folderID };
     const rooms = message.userIDs;
-    const event = message.objectType;
+    const event = `${message.objectType}_${message.operation}`;
 
     const msg = {
       data,

@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "npm": "^6.14.8",
-    "socket-rabbit": "^0.0.2"
+    "rabbit-socket.io": "^0.0.1"
   }
 }
