@@ -1,5 +1,8 @@
 export const config = {
   port: process.env.port || 8080,
+  socket: {
+    port: process.env.SOCKET_PORT || 3000
+  },
   redis: {
     port: process.env.REDIS_PORT || 6379,
     host: process.env.REDIS_HOST || 'localhost',

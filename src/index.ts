@@ -1,4 +1,7 @@
 import * as socketRabbit from 'rabbit-socket.io';
+import * as http from 'http';
+import express from 'express';
+import { router } from './router';
 import { config } from './config';
 
 export interface IMessage {
@@ -20,9 +23,21 @@ enum OPERATION {
   DELETE = 'DELETE',
 }
 
-(async () => {
-  await socketRabbit.connect(config.rabbit.connectionString, config.port as number);
-  await socketRabbit.listen(config.rabbit.queue, (content) => {
+const startServer = async () => {
+  const app: express.Application = express();
+  app.use(router);
+
+  http.createServer(app).listen(config.port, () => {
+    console.log(`Express server listening on port ${config.port}`);
+  });
+}
+
+const connectRabbitSocket = async () => {
+  await socketRabbit.connect(config.rabbit.connectionString, config.socket.port as number);
+}
+
+const listenToQueue = async () => {
+  await socketRabbit.listen(config.rabbit.queue, (content: any) => {
 
     const message = JSON.parse(content);
 
@@ -38,4 +53,9 @@ enum OPERATION {
 
     return msg;
   });
+}
+
+(async () => {
+  await connectRabbitSocket();
+  await listenToQueue();
 })();
