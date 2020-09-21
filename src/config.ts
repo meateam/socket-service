@@ -1,5 +1,5 @@
 export const config = {
-  port: process.env.port || 8080,
+  appPort: process.env.PORT || 8080,
   socket: {
     port: process.env.SOCKET_PORT || 3000
   },
