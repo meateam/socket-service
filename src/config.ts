@@ -1,26 +1,32 @@
+const esHost: string = process.env.ELASTICSEARCH_URL || 'http://localhost:9200';
+const esUser: string = process.env.ELASTICSEARCH_USER || '';
+const esPass: string = process.env.ELASTICSEARCH_PASSWORD || '';
+
 export const config = {
-  server: {
-    port: process.env.APPLICATION_PORT || 3000,
-    name: 'socket-service',
+  appPort: process.env.PORT || 8080,
+  socket: {
+    port: process.env.SOCKET_PORT || 3000
   },
   redis: {
     port: process.env.REDIS_PORT || 6379,
     host: process.env.REDIS_HOST || 'localhost',
   },
-  socket: {
-    namespaces: {
-      confguratioin: process.env.CONFIGURATION_NAMESPACE || '/configuration',
-      shared: process.env.SHARED_FOLDERS_NAMESPACE || '/shared-page',
-      folder: process.env.FOLDER_NAMESPACE || '/folder'
-    },
-    event: process.env.SOCKET_EVENT_NAME || 'refresh'
+  rabbit: {
+    connectionString: process.env.RABBIT_CONNECTION_STRING || 'amqp://localhost',
+    queue: process.env.SOCKET_RABBIT_QUEUE || 'socket'
   },
   authorization: {
     secret: process.env.GW_SECRET || '',
-    required: process.env.AUTH_REQUIRED || false,
+    origin: process.env.GW_WEB_UI || 'localhost',
   },
-  cors: {
-    socket: process.env.GW_WEB_UI || 'localhost',
-    gw: process.env.GW_ALLOW_ORIGINS || 'localhost:8080'
+  logger: {
+    serviceName: 'socket-service',
+    options: {
+      hosts: esHost && esHost.split(','),
+      httpAuth: `${esUser}:${esPass}`,
+    },
+    indexPrefix: process.env.LOG_INDEX || 'kdrive',
+    debugMode: process.env.DEBUG_MODE === 'true',
+    useElastic: process.env.ELASTICSEARCH_URL !== undefined,
   },
 };

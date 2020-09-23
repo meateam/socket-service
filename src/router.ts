@@ -1,16 +1,5 @@
-import { Router } from 'express';
-import { EventRouter } from './events/event.router';
+import { Router, Response, Request } from 'express';
 
-const AppRouter: Router = Router();
+export const router = Router();
 
-AppRouter.use('/api/socket', EventRouter);
-
-AppRouter.use('/healthCheck', (req, res) => {
-  res.status(200).send('alive');
-});
-
-AppRouter.use('*', (req, res) => {
-  res.status(404).send('Invalid Route');
-});
-
-export { AppRouter };
+router.get('/isalive', (req: Request, res: Response) => { res.send('alive'); });
