@@ -28,7 +28,7 @@ enum Operation {
  * startServer create a new server and listen to the recived port.
  * @param port is the express app port
  */
-const startServer = async (port: number) => {
+const startServer = async (port: number): Promise<void> => {
   const app: express.Application = express();
   app.use(router);
 
@@ -40,7 +40,7 @@ const startServer = async (port: number) => {
 /**
  * connectRabbitSocket is connecting to rabbit with the connection string and the port of the socket
  */
-const connectRabbitSocket = async () => {
+const connectRabbitSocket = async (): Promise<void> => {
   try {
     await socketRabbit.connect(
       config.rabbit.connectionString,
@@ -61,10 +61,10 @@ const connectRabbitSocket = async () => {
 /***
  * listenToQueue is listens to the queue, and formats all the recived messages to the require type.
  */
-const listenToQueue = async () => {
+const listenToQueue = async (): Promise<void> => {
   try {
     await socketRabbit.listen(config.rabbit.queue, (content: any) => {
-      const message = JSON.parse(content);
+      const message: IMessage = JSON.parse(content);
 
       const data: { fileID: string; folderID: string } = {
         fileID: message.fileID,
@@ -87,7 +87,7 @@ const listenToQueue = async () => {
   }
 };
 
-(async () => {
+(async (): Promise<void> => {
   await startServer(config.appPort as number);
 
   await connectRabbitSocket();
