@@ -2,6 +2,7 @@
 pipeline {
   agent any
     stages {
+      // this stage create enviroment variable from git for discored massage
       stage('get_commit_msg') {
         steps {
           script {
@@ -22,6 +23,7 @@ pipeline {
           }
         }
       }
+      // build image of system wheb pushed to master or develop
       stage('build image') {
         when {
             anyOf {
@@ -29,6 +31,7 @@ pipeline {
             }  
         }
         parallel {
+          // when pushed to master or develop build image and push to acr 
           stage('build dockerfile of system only for master and develop and push them to acr') {
            steps {
               script{
@@ -48,6 +51,7 @@ pipeline {
               }
             }
           }
+          // login to acr when pushed to branch master or develop
           stage('login to azure container registry') {
             steps {  
               withCredentials([usernamePassword(credentialsId:'DRIVE_ACR',usernameVariable: 'USER', passwordVariable: 'PASS')]) {
