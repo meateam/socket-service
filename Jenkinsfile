@@ -11,7 +11,7 @@ pipeline {
       spec: 
           containers: 
             - name: dind-slave
-              image: docker:1.12.6-dind 
+              image: docker:dind 
               resources: 
                   requests: 
                       cpu: 20m 
@@ -53,25 +53,25 @@ pipeline {
       }
       // build image of system wheb pushed to master or develop
       stage('build image') {
-        when {
-            anyOf {
-                branch 'master'; branch 'develop'
-            }  
-        }
+        // when {
+        //     anyOf {
+        //         branch 'master'; branch 'develop'
+        //     }  
+        // }
         parallel {
           // when pushed to master or develop build image and push to acr 
           stage('build dockerfile of system only for master and develop and push them to acr') {
            steps {
-              script{
-                if(env.GIT_BRANCH == 'master') {
-                  sh "docker build -t  drivehub.azurecr.io/${env.GIT_REPO_NAME}/master:${env.GIT_SHORT_COMMIT} ."
-                  sh "docker push  drivehub.azurecr.io/${env.GIT_REPO_NAME}/master:${env.GIT_SHORT_COMMIT}"
-                }
-                else if(env.GIT_BRANCH == 'develop') {
-                  sh "docker build -t  drivehub.azurecr.io/${env.GIT_REPO_NAME}/develop ."
-                  sh "docker push  drivehub.azurecr.io/${env.GIT_REPO_NAME}/develop"  
-                }
-              }  
+              // script{
+              //   if(env.GIT_BRANCH == 'master') {
+                   sh "docker build -t  drivehub.azurecr.io/${env.GIT_REPO_NAME}/master:${env.GIT_SHORT_COMMIT} ."
+              //     sh "docker push  drivehub.azurecr.io/${env.GIT_REPO_NAME}/master:${env.GIT_SHORT_COMMIT}"
+              //   }
+              //   else if(env.GIT_BRANCH == 'develop') {
+              //     sh "docker build -t  drivehub.azurecr.io/${env.GIT_REPO_NAME}/develop ."
+              //     sh "docker push  drivehub.azurecr.io/${env.GIT_REPO_NAME}/develop"  
+              //   }
+              // }  
             }
             post {
               always {
