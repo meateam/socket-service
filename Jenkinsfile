@@ -51,6 +51,23 @@ pipeline {
          }
        }
       }
+      // build image for unit test
+      stage('build dockerfile of tests') {
+        steps {
+            sh "docker build -t unittest -f test.Dockerfile ." 
+        }  
+      }
+      // run image of unit test
+      stage('run unit tests') {   
+        steps {
+            sh "docker run unittest"  
+        }
+        post {
+          always {
+            discordSend description: '**service**: '+ env.GIT_REPO_NAME + '\n **Build**:' + " " + env.BUILD_NUMBER + '\n **Branch**:' + " " + env.GIT_BRANCH + '\n **Status**:' + " " +  currentBuild.result + '\n \n \n **Commit ID**:'+ " " + env.GIT_SHORT_COMMIT + '\n **commit massage**:' + " " + env.GIT_COMMIT_MSG + '\n **commit email**:' + " " + env.GIT_COMMITTER_EMAIL, footer: '', image: '', link: 'http://jnk-devops-ci-cd.northeurope.cloudapp.azure.com/blue/organizations/jenkins/'+env.JOB_FOR_URL+'/detail/'+env.BRANCH_FOR_URL+'/'+env.BUILD_NUMBER+'/pipeline', result: currentBuild.result, thumbnail: '', title: 'link to logs of unit test', webhookURL: env.discord   
+          }
+        }
+      }
       // build image of system wheb pushed to master or develop
       stage('build image') {
         when {
@@ -64,12 +81,12 @@ pipeline {
            steps {
               script{
                 if(env.GIT_BRANCH == 'master') {
-                  sh "docker build -t  drivehub.azurecr.io/${env.GIT_REPO_NAME}/master:${env.GIT_SHORT_COMMIT} ."
-                  sh "docker push  drivehub.azurecr.io/${env.GIT_REPO_NAME}/master:${env.GIT_SHORT_COMMIT}"
+                  sh "docker build -t  drivehub.azurecr.io/meateam/${env.GIT_REPO_NAME}:master_${env.GIT_SHORT_COMMIT} ."
+                  sh "docker push  drivehub.azurecr.io/meateam/${env.GIT_REPO_NAME}:master_${env.GIT_SHORT_COMMIT}"
                 }
                 else if(env.GIT_BRANCH == 'develop') {
-                  sh "docker build -t  drivehub.azurecr.io/${env.GIT_REPO_NAME}/develop ."
-                  sh "docker push  drivehub.azurecr.io/${env.GIT_REPO_NAME}/develop"  
+                  sh "docker build -t  drivehub.azurecr.io/meateam/${env.GIT_REPO_NAME}:develop ."
+                  sh "docker push  drivehub.azurecr.io/meateam/${env.GIT_REPO_NAME}:develop"  
                 }
               }  
             }
